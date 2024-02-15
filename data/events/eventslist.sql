@@ -1,0 +1,7 @@
+SELECT [Id]
+      ,[FirstName]
+      ,[LastName]
+      ,[Email]
+      ,[Password]
+      ,[Address]
+  FROM [alphaHRM].[dbo].[registration]

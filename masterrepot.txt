@@ -1,0 +1,137 @@
+SELECT
+  Individuals.Id AS [Individuals Id]
+  ,Individuals.Surname
+  ,Individuals.Firstname
+  ,Individuals.DateOBirth
+  ,Individuals.otherNumber  
+  ,Individuals.TittleId
+  ,Individuals.Othernames
+  ,Individuals.StaffNumber
+  ,Individuals.EmailAddress
+  ,Designations.id AS [Designations id]
+  ,Designations.Name AS [Designations Name]
+  ,DatedOn.Id AS [DatedOn Id]
+  ,DatedOn.[Month]
+  ,DatedOn.[Year]
+  ,DatedOn.Dated
+  ,Banknames.id AS [Banknames id]
+  ,Banknames.Name AS [Banknames Name]
+  ,SalaryScales.id AS [SalaryScales id]
+  ,SalaryScales.Name AS [SalaryScales Name]
+  ,SalaryScales.GradeCode
+  ,SalaryScales.[Level]
+  ,SalaryScales.Step
+  ,CAST(Jobs.PayableMonth AS float)/CAST(Jobs.TotalMonth AS float) * SalaryScales.Amount as [Amount]
+  ,SubUnits.id AS [SubUnits id]
+  ,SubUnits.Name AS [SubUnits Name]
+  ,SubUnits.UnitId
+  ,Tittles.id AS [Tittles id]
+  ,Tittles.Name AS [Tittles Name]
+  ,Units.id AS [Units id]
+  ,Units.Name AS [Units Name]
+  ,Accounts.id AS [Accounts id]
+  ,Accounts.BanknameId
+  ,Accounts.AccountNumber
+  ,Accounts.SortCode
+
+  ,Accounts.PensionAccountNumber
+  ,Accounts.IndividualId AS [Accounts IndividualId]
+  ,Accounts.DatedOnId AS [Accounts DatedOnId]
+  ,Jobs.id AS [Jobs id]
+  ,Jobs.HiredDate
+  ,Jobs.LastUpdateBy
+  ,Jobs.SubUnitId
+  ,Jobs.DesignationId
+  ,Jobs.SalaryScaleId
+  ,Jobs.IndividualId AS [Jobs IndividualId]
+  ,Jobs.DatedOnId AS [Jobs DatedOnId]
+FROM
+  Individuals
+  INNER JOIN Tittles
+    ON Individuals.TittleId = Tittles.id
+  INNER JOIN Accounts
+    ON Individuals.Id = Accounts.IndividualId
+  INNER JOIN Banknames
+    ON Accounts.BanknameId = Banknames.id
+  INNER JOIN DatedOn
+    ON Accounts.DatedOnId = DatedOn.Id
+  INNER JOIN Jobs
+    ON Individuals.Id = Jobs.IndividualId AND DatedOn.Id = Jobs.DatedOnId
+  INNER JOIN Designations
+    ON Jobs.DesignationId = Designations.id
+  INNER JOIN SalaryScales
+    ON Jobs.SalaryScaleId = SalaryScales.id
+  INNER JOIN SubUnits
+    ON Jobs.SubUnitId = SubUnits.id
+  INNER JOIN Units
+    ON SubUnits.UnitId = Units.id
+where DatedOn.[Month]=@month and DatedOn.[Year]=@year and Jobs.Status!='TERMINATED' and Jobs.Status!='SUSPENDED' and Jobs.Status!='RESIGN' and Jobs.Status!='RETIRED' and Jobs.Status!='DEATH'
+		union all
+  SELECT
+  Individuals.Id AS [Individuals Id]
+  ,Individuals.Surname
+  ,Individuals.Firstname
+  ,Individuals.DateOBirth
+ ,Individuals.otherNumber  
+  ,Individuals.TittleId
+  ,Individuals.Othernames
+  ,Individuals.StaffNumber
+  ,Individuals.EmailAddress
+  ,Designations.id AS [Designations id]
+  ,Designations.Name AS [Designations Name]
+  ,DatedOn.Id AS [DatedOn Id]
+  ,DatedOn.[Month]
+  ,DatedOn.[Year]
+  ,DatedOn.Dated
+  ,Banknames.id AS [Banknames id]
+  ,Banknames.Name AS [Banknames Name]
+  ,SalaryScales.id AS [SalaryScales id]
+  ,SalaryScales.Name AS [SalaryScales Name]
+  ,SalaryScales.GradeCode
+  ,SalaryScales.[Level]
+  ,SalaryScales.Step
+  ,CAST(MasterJobs.PayableMonth AS float)/CAST(MasterJobs.TotalMonth AS float) *SalaryScales.Amount as [Amount]
+  ,SubUnits.id AS [SubUnits id]
+  ,SubUnits.Name AS [SubUnits Name]
+  ,SubUnits.UnitId
+  ,Tittles.id AS [Tittles id]
+  ,Tittles.Name AS [Tittles Name]
+  ,Units.id AS [Units id]
+  ,Units.Name AS [Units Name]
+  ,MasterAccounts.id AS [MasterAccounts id]
+  ,MasterAccounts.BanknameId
+  ,MasterAccounts.AccountNumber
+  ,MasterAccounts.SortCode
+ 
+  ,MasterAccounts.PensionAccountNumber
+  ,MasterAccounts.IndividualId AS [MasterAccounts IndividualId]
+  ,MasterAccounts.DatedOnId AS [MasterAccounts DatedOnId]
+  ,MasterJobs.id AS [MasterJobs id]
+  ,MasterJobs.HiredDate
+  ,MasterJobs.LastUpdateBy
+  ,MasterJobs.SubUnitId
+  ,MasterJobs.DesignationId
+  ,MasterJobs.SalaryScaleId
+  ,MasterJobs.IndividualId AS [MasterJobs IndividualId]
+  ,MasterJobs.DatedOnId AS [MasterJobs DatedOnId]
+FROM
+  Individuals
+  INNER JOIN Tittles
+    ON Individuals.TittleId = Tittles.id
+  INNER JOIN MasterAccounts
+    ON Individuals.Id = MasterAccounts.IndividualId
+  INNER JOIN Banknames
+    ON MasterAccounts.BanknameId = Banknames.id
+  INNER JOIN DatedOn
+    ON MasterAccounts.DatedOnId = DatedOn.Id
+  INNER JOIN MasterJobs
+    ON Individuals.Id = MasterJobs.IndividualId AND DatedOn.Id = MasterJobs.DatedOnId 
+  INNER JOIN Designations
+    ON MasterJobs.DesignationId = Designations.id
+  INNER JOIN SalaryScales
+    ON MasterJobs.SalaryScaleId = SalaryScales.id
+  INNER JOIN SubUnits
+    ON MasterJobs.SubUnitId = SubUnits.id
+  INNER JOIN Units
+    ON SubUnits.UnitId = Units.id
+where DatedOn.[Month]=@month and DatedOn.[Year]=@year and MasterJobs.Status!='TERMINATED' and MasterJobs.Status!='SUSPENDED' and MasterJobs.Status!='RESIGN' and MasterJobs.Status!='RETIRED' and MasterJobs.Status!='DEATH'

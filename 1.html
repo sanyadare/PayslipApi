@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>calculating weekdays</title>
+    <script type="text/javascript"> 
+       /* var weekdays=0;
+        wday:
+        for(var day=0; day<=30; day++){
+            checkday=day%7;
+            if(checkday==0){continue; }
+            else(weekdays++);
+            
+        }document.write("total no of weekdays:" + weekdays);
+function person( name, age){
+    document.write(name + "is" + age +"years old");
+
+}
+function concatenate(first, last){
+    var seccond;
+    seccond= first + last;
+    return seccond;
+}                            
+function two(){
+    var result;
+    result=concatenate('ada' ,  'obi');
+    document.write(result);
+} 
+function multiply(a,b){
+    function square(x){return x*x;}
+    return Math.sqrt(square(a) + square(b));
+}
+function second(){
+    var result;
+    result= multiply(1,2);
+    document.write(result);
+}*/
+  var func= new Function( "x", "y", "return x*y;");
+
+  function two(){
+    var result;
+    result=func(15, 34);
+    document.write(result);
+
+  }
+    </script>
+</head>           
+<body>
+    <button onclick="two()"> see for yourself</button>
+</body>
+</html>
